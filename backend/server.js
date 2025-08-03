@@ -105,7 +105,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // MongoDB connection with better error handling
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://sheikhanas925:h1o6nQVyzVFx2vMl@cluster0.ojbgqn9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+    const mongoURI = process.env.MONGODB_URI;
     
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
@@ -217,7 +217,7 @@ app.use('*', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT 
 
 const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
@@ -234,24 +234,17 @@ const server = app.listen(PORT, () => {
 });
 
 // Graceful shutdown
-const gracefulShutdown = (signal) => {
+const gracefulShutdown = async (signal) => {
   console.log(`\n🛑 Received ${signal}. Starting graceful shutdown...`);
   
-  server.close(() => {
-    console.log('✅ HTTP server closed');
-    
-    mongoose.connection.close(false, () => {
-      console.log('✅ MongoDB connection closed');
-      console.log('👋 Process terminated gracefully');
-      process.exit(0);
-    });
-  });
+  server.close();
 
-  // Force close after 10 seconds
-  setTimeout(() => {
-    console.error('❌ Could not close connections in time, forcefully shutting down');
-    process.exit(1);
-  }, 10000);
+    await mongoose.connection.close();
+
+    console.log('✅ MongoDB connection closed');
+  console.log('👋 Process terminated gracefully');
+  process.exit(0);
+  
 };
 
 // Handle shutdown signals
