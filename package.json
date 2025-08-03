@@ -1,0 +1,27 @@
+{
+  "name": "locallens",
+  "version": "1.0.0",
+  "description": "A hyperlocal issue reporting platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "install-deps": "npm install && cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": [
+    "mern",
+    "issue-reporting",
+    "local",
+    "community"
+  ],
+  "author": "LocalLens Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.84.1",
+    "@tanstack/react-query-devtools": "^5.84.1"
+  }
+}
